@@ -18,7 +18,7 @@ def register(): # para registrar um novo individuo
     global age
     while True: # cria um loop enquanto nao receber um nome valido
         try:
-            name = input('Olá, digite seu nome inteiro:\n') # grava o nome
+            name = input('Olá, digite seu nome inteiro:\n')
             if all(c.isalpha() or c.isspace() for c in name):
                 break # quebra o loop
             else:
@@ -30,10 +30,10 @@ def register(): # para registrar um novo individuo
     first_name = brk[0] # pega o primeiro nome
 
     genders_tuple = ('masculino', 'feminino', 'outro') # generos aceitos
-    gender = input('Qual o seu gênero?\n(masculino/feminino/outro)\n') # grava o genero
+    gender = input('Qual o seu gênero?\n(masculino/feminino/outro)\n')
     while gender not in genders_tuple: # genero invalido
         gender = input('Gênero inválido. Por favor insira "masculino", "feminino" ou "outro":\n')
-    if gender == 'masculino': # grava idade / tratamentos diferentes de acordo com o genero informado
+    if gender == 'masculino': # grava idade; tratamentos diferentes de acordo com o genero informado
         age = input('Bem-vindo {}, entre com sua idade:\n'.format(first_name))
     elif gender == 'feminino':
         age = input('Bem-vinda {}, entre com sua idade:\n'.format(first_name))
@@ -45,16 +45,19 @@ def register(): # para registrar um novo individuo
     age = int(age)
     while age < 1 or age > 125: # aceita idades entre 1 e 125 anos
         age = input('Idade inválida. Por favor, tente novamente.\n')
-    if age <= 18: # separa adulto de jovem/crianca de acordo com a maioridade
+    
+    if age >= 18: # separa adulto de jovem/crianca de acordo com a maioridade
         fullage = 'adulto'
     else:
         fullage = 'jovem/criança'
 
     occupation = input('Qual sua ocupação?\n') # grava ocupacao
-    while occupation.isalpha() == False: # ocupacao invalida
-        occupation = input('Ocupação Indisponível. Por favor insira uma ocupação válida.\n')
+    while any(x.isalpha() for x in occupation) == False or all(x.isalpha() or x.isspace() for x in occupation) == False:
+        occupation = input('Ocupação inválida. Revise os dados e tente novamente: ')
 
-    registration = 'Nome: {}\n' \
+    occupation = occupation.lower()
+
+    register1 = 'Nome: {}\n' \
                    'Gênero: {}\n' \
                    'Idade: {} ({})\n' \
                    'Ocupação: {}'.format(name,
@@ -63,25 +66,25 @@ def register(): # para registrar um novo individuo
                                          occupation) # organiza o cadastro
 
     print('\nCadastro completo. Aqui estão suas informações:\n'
-          '{}'.format(registration)) # exibe ao usuario o cadastro
+          '{}'.format(register1)) # exibe ao usuario o cadastro
 
     if __name__ == '__main__':
-        directory = 'C:/Users/rauls/Desktop/registration.txt'
+        directory = 'C:/Users/Raul/Desktop/register.txt'
         file = open(directory, 'a')
-        text = ('\n\n[{}]'
+        text = ('\n[{}]'
                 '\n{}'.format(current_date,
-                              registration))
+                              register1))
         file.write(text)
         file.close() # grava o cadastro no arquivo de texto
 
 
 def correct(): # para corrigir o ultimo cadastro
-    directory = 'C:/Users/rauls/Desktop/registration.txt' # endereco do arquivo
+    directory = 'C:/Users/Raul/Desktop/register.txt'
     readfile = open(directory) # abre o arquivo
     lines = readfile.readlines()
     readfile.close()
     w = open(directory, 'w')
-    w.writelines([item for item in lines[:-7]]) # apaga o ultimo cadastro
+    w.writelines([item for item in lines[:-6]]) # apaga o ultimo cadastro
     w.close() # fecha o arquivo
     register() # cria um novo cadastro
 
